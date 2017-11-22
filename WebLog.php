@@ -3,11 +3,11 @@
 namespace weblib\log;
 
 /**
- * 日志类(协程)
+ * 日志类
  * Class log
- * @package weblib\Weblog
+ * @package weblib\log\WebLog
  */
-class WebLogAs
+class WebLog
 {
     // 日志存放路径
     protected static $logpath = '/data/logs/service/';
