@@ -12,6 +12,18 @@ class WebLog
     // 日志存放路径
     protected static $logpath =TSF_TAF_LOG_PATH;
 
+    protected static $logLevel =4;
+
+    public static function setConf($config)
+    {
+        if(isset($config['logPath']) && $config['logPath']){
+            self::$logpath = $config['logPath'];
+        }
+        if(isset($config['logLevel']) && $config['logLevel']){
+            self::$logLevel = $config['logLevel'];
+        }
+    }
+
     /**
      * 设置日志路径
      * @param $path
@@ -27,6 +39,15 @@ class WebLog
         }
     }
 
+    public static function setLogLevel($level = 4){
+        if(intval($level)>0) {
+            self::$logLevel = $level;
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     /**
      * 信息日志(用于请求出入的参数)
      * @param $msg
@@ -35,11 +56,7 @@ class WebLog
      */
     public static function info($msg, $r, $method, $df = null, $df2 = null, $otherMsgArr = [])
     {
-        if (isset(\ENVConst::$log_path) && !empty(\ENVConst::$log_path)) {
-            self::setLogPath(\ENVConst::$log_path);
-        }
-        $logLevel = \ENVConst::LOG_LEVEL;
-        if ($logLevel >= 4){
+        if (self::$logLevel >= 4){
             self::logJson($msg, "info", $otherMsgArr, $r, $method, $df, $df2);
         }
     }
@@ -52,9 +69,6 @@ class WebLog
      */
     public static function error($msg, $r, $method, $df = null, $df2 = null, $otherMsgArr = [])
     {
-        if (isset(\ENVConst::$log_path) && !empty(\ENVConst::$log_path)) {
-            self::setLogPath(\ENVConst::$log_path);
-        }
         self::logJson($msg, "error", $otherMsgArr, $r, $method, $df, $df2);
     }
 
@@ -66,11 +80,7 @@ class WebLog
      */
     public static function debug($msg, $r, $method, $df = null, $df2 = null, $otherMsgArr = [])
     {
-        if (isset(\ENVConst::$log_path) && !empty(\ENVConst::$log_path)) {
-            self::setLogPath(\ENVConst::$log_path);
-        }
-        $logLevel = \ENVConst::LOG_LEVEL;
-        if ($logLevel >= 5)
+        if (self::$logLevel >= 5)
             self::logJson($msg, "debug", $otherMsgArr, $r, $method, $df, $df2);
     }
 
